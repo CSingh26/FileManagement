@@ -23,21 +23,6 @@ yarn-error.log*
 .idea/
 .DS_Store
 
-# Frontend
-frontend/node_modules/
-frontend/build/
-frontend/coverage/
-frontend/.eslintcache
-frontend/src/*.scss
-
-# Backend
-backend/node_modules/
-backend/logs/
-backend/tmp/
-backend/uploads/
-backend/coverage/
-backend/.eslintcache
-
 # OS Generated Files
 *.swp
 *.swo
@@ -69,3 +54,4 @@ coverage/
 .tern-port
 
 *.pdf
+*.json
