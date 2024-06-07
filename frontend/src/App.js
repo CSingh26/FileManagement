@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import './App.css'
-import Header from './components/Header/header'
 import LoginForm from './components/Login/login'
 import SignupForm from './components/Signup/signup'
 import Home from './components/Home/home'
@@ -15,8 +14,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/" element={<SignupForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<SignupForm />} />
       </Routes>
     </Router>
   );
