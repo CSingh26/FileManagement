@@ -1,0 +1,30 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+  
+  body {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.main-content {
+    display: flex;
+}
+
+.form-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.for-pwd {
+    text-decoration: none;
+    color: black;
+}
+
+.signup-page {
+    text-decoration: none;
+    color: black;
+}

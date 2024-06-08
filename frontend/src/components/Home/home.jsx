@@ -6,7 +6,8 @@ function Home() {
         <>
             <Header />
             <div className="main-content">
-            
+                <p>Welcome to File Zen</p>
+                <p>Begin your file management journey here</p>
             </div>
         </>
         
