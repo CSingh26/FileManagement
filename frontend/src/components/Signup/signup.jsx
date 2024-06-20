@@ -31,7 +31,37 @@ function SignupForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(formData)
+        
+        const pwdValid = validatePwd(formData.password)
+        const pwdmatch = formData.password === formData.confirmPassword
+
+        if (!pwdValid) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: "Password must be 8 charcaters longters, contain an uppercase letter, a special character, and a number.'"
+            }))
+        } else {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: ''
+            }))
+        }
+
+        if (!pwdmatch) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                confirmPassword: 'Passwords do not match'
+            }))
+        } else {
+            setErrors((prevErrors => ({
+                ...prevErrors,
+                confirmPassword: ''
+            })))
+        }
+
+        if (pwdValid && pwdmatch) {
+            console.log('Form data: ', formData)
+        }
     }
     return (
         <>
@@ -69,6 +99,7 @@ function SignupForm() {
                             value={formData.password}
                             onChange={handleChange}
                             />
+                            {errors.password && <p className="error">{errors.password}</p>}
                         </div>
                         <div className="password-input">
                             <input 
@@ -80,6 +111,7 @@ function SignupForm() {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             />
+                            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
                         </div>
                         <div className="forgot-pwd">
                             <Link to={"/login"} className="login-page">Already a User?</Link>
