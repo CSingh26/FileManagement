@@ -1,6 +1,7 @@
-import React, { useState}from "react";
-import Header from "../Header/header";
-import { Link } from "react-router-dom";
+import React, { useState }from "react"
+import Header from "../Header/header"
+import { Link, useNavigate } from "react-router-dom"
+import api from "../../utils/axios"
 import './login.css'
 
 function LoginForm() {
@@ -9,14 +10,26 @@ function LoginForm() {
         password: ''
     })
 
+    const [error, setErrors] = useState('')
+    const history = useNavigate()
+
     const handleChange = (e) => {
         const {name, value} = e.target 
         setFormData({ ...formData, [name]: value})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData)
+        
+        try {
+            const response = await api.post('/login', formData)
+            console.log(response.data)
+
+            localStorage.setItem('token', response.data.token)
+            history('/')
+        } catch (err) {
+            setErrors('Invalid Credentials')
+        }
     }
     return (
         <>
@@ -24,7 +37,7 @@ function LoginForm() {
 
             <div className="main-content">
                 <div className="form-area">
-                    <form method="post">
+                    <form onSubmit={handleSubmit}>
                         <div className="username-input">
                             <input 
                             type="text" 
@@ -51,8 +64,9 @@ function LoginForm() {
                         <div className="signup-page">
                             <p>Don't have an Account? <Link to={"/signup"} className="for-pwd">Register</Link></p>
                         </div>
+                        {error && <p className="error">{error}</p>}
                         <div className="login-btn">
-                            <button>Login</button>
+                            <button type="submit">Login</button>
                         </div>
                     </form>
                 </div>
