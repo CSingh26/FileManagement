@@ -33,8 +33,8 @@ function LoginForm() {
             const response = await api.post('/login', formData)
             console.log(response.data)
 
-            const { token, user } = response.data;
-            login(token, user)
+            const { user } = response.data;
+            login(user)
             history('/profile')
         } catch (err) {
             setErrors('Invalid Credentials')

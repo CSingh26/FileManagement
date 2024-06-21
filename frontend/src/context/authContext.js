@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react'
+import server from '../utils/axios'
 
 export const AuthContext = createContext()
 
@@ -12,18 +13,22 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
-  const login = (token, userData) => {
+  const login = (userData) => {
     const storageUserData = {
-      token, 
       user: userData
     }
     setAuth(storageUserData)
     localStorage.setItem('userData', JSON.stringify(storageUserData))
   }
 
-  const logout = () => {
-    setAuth(null)
-    localStorage.removeItem('userData')
+  const logout = async () => {
+    try {
+      await server.post('/logout')
+      setAuth(null)
+      localStorage.removeItem('userData')
+    } catch (err) {
+      console.error('Error logging out', err)
+    }
   }
 
   return (

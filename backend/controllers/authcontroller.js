@@ -58,11 +58,16 @@ exports.login = async(req, res) => {
 
         jwt.sign(payload, process.env.JWT_KEY, {expiresIn: '1h'}, (err, token) => {
             if (err) throw err
-            res.status(201).json({ 
-                message: "Login sucessfull",
-                token: token,
-                user:{
-                    _id:user._id,
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', 
+                sameSite: 'strict'
+              })
+
+            res.status(200).json({
+                message: 'Login successful',
+                user: {
+                    _id: user._id,
                     username: user.username,
                     email: user.email
                 }
@@ -72,4 +77,11 @@ exports.login = async(req, res) => {
         console.log(err)
         res.status(500).send('Server Error, Please try again!!')
     }
+}
+
+exports.logout = (req, res) => {
+    res.clearCookie('token')
+    res.status(200).json({
+        message: 'User Logged Out'
+    })
 }
