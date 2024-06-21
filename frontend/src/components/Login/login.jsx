@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import api from "../../utils/axios"
 import './login.css'
 import { AuthContext } from "../../context/authContext"
+import { toast } from 'react-toastify'
 
 function LoginForm() {
     const [formData, setFormData] = useState({
@@ -11,7 +12,6 @@ function LoginForm() {
         password: ''
     })
 
-    const [error, setErrors] = useState('')
     const history = useNavigate()
     const { auth, login } = useContext(AuthContext)
 
@@ -35,9 +35,14 @@ function LoginForm() {
 
             const { user } = response.data;
             login(user)
+            toast.success('Login Successful!', {
+                position: "top-center"
+            })
             history('/profile')
         } catch (err) {
-            setErrors('Invalid Credentials')
+            toast.error('Invalid Credentials', {
+                position: "top-center"
+            })
         }
     }
     return (
@@ -73,7 +78,6 @@ function LoginForm() {
                         <div className="signup-page">
                             <p>Don't have an Account? <Link to={"/signup"} className="for-pwd">Register</Link></p>
                         </div>
-                        {error && <p className="error">{error}</p>}
                         <div className="login-btn">
                             <button type="submit">Login</button>
                         </div>

@@ -3,6 +3,7 @@ import Header from "../Header/header"
 import './signup.css'
 import { Link, useNavigate } from "react-router-dom"
 import server from "../../utils/axios"
+import { toast } from 'react-toastify'
 
 function SignupForm() {
   const [formData, setFormData] = useState({
@@ -12,12 +13,6 @@ function SignupForm() {
     confirmPassword: ''
   })
 
-  const [errors, setErrors] = useState({
-    password: '',
-    confirmPassword: ''
-  })
-
-  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -40,27 +35,22 @@ function SignupForm() {
     const pwdmatch = formData.password === formData.confirmPassword
 
     if (!pwdValid) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: "Password must be at least 8 characters long, contain an uppercase letter, a special character, and a number."
-      }))
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: ''
-      }))
+      toast.error(
+        `Password must be at least 8 characters long, 
+        contain an uppercase letter, 
+        a special character, and a number.`,
+        {
+          position: "top-center"
+        }
+      )
+      return
     }
 
     if (!pwdmatch) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        confirmPassword: 'Passwords do not match'
-      }))
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        confirmPassword: ''
-      }))
+      toast.error("Passwords do not match." ,{
+        position: "top-center"
+      })
+      return
     }
 
     if (pwdValid && pwdmatch) {
@@ -71,10 +61,15 @@ function SignupForm() {
           password: formData.password
         })
         console.log(response.data)
+        toast.success("Registration successful! Please log in.", {
+          position: "top-center"
+        })
         navigate('/login')
       } catch (err) {
         console.error(err)
-        setError('Registration failed')
+        toast.error("Registration failed. Please try again.", {
+          position: "top-center"
+        })
       }
     }
   }
@@ -134,9 +129,6 @@ function SignupForm() {
             <div className="forgot-pwd">
               <Link to="/login" className="login-page">Already a User?</Link>
             </div>
-            {errors.password && <p className="error">{errors.password}</p>}
-            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-            {error && <p className="error">{error}</p>}
             <div className="signup-btn">
               <button type="submit">Signup</button>
             </div>
