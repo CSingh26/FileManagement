@@ -60,7 +60,12 @@ exports.login = async(req, res) => {
             if (err) throw err
             res.status(201).json({ 
                 message: "Login sucessfull",
-                token: token
+                token: token,
+                user:{
+                    _id:user._id,
+                    username: user.username,
+                    email: user.email
+                }
             })
         })
     } catch (err) {

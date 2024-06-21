@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './App.css'
 import LoginForm from './components/Login/login'
 import SignupForm from './components/Signup/signup'
 import Home from './components/Home/home'
+import Profile from './components/Profile/userProfile'
+import ProtectedRoutes from './context/protectedRoutes'
+import { AuthProvider } from './context/authContext'
 import  {
   BrowserRouter as Router,
   Route,
@@ -11,14 +14,17 @@ import  {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/signup" element={<SignupForm />} />
-      </Routes>
-    </Router>
-  );
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path='/profile' element={<ProtectedRoutes><Profile /></ProtectedRoutes>}/>
+        </Routes>
+      </Router>
+    </AuthProvider>
+  )
 }
 
 export default App;

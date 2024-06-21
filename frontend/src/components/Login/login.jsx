@@ -1,8 +1,9 @@
-import React, { useState }from "react"
+import React, { useContext, useState, useEffect }from "react"
 import Header from "../Header/header"
 import { Link, useNavigate } from "react-router-dom"
 import api from "../../utils/axios"
 import './login.css'
+import { AuthContext } from "../../context/authContext"
 
 function LoginForm() {
     const [formData, setFormData] = useState({
@@ -12,11 +13,18 @@ function LoginForm() {
 
     const [error, setErrors] = useState('')
     const history = useNavigate()
+    const { auth, login } = useContext(AuthContext)
 
     const handleChange = (e) => {
         const {name, value} = e.target 
         setFormData({ ...formData, [name]: value})
     }
+
+    useEffect(() => {
+        if (auth) {
+            history('/profile')
+        }
+    }, [auth, history])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -25,8 +33,9 @@ function LoginForm() {
             const response = await api.post('/login', formData)
             console.log(response.data)
 
-            localStorage.setItem('token', response.data.token)
-            history('/')
+            const { token, user } = response.data;
+            login(token, user)
+            history('/profile')
         } catch (err) {
             setErrors('Invalid Credentials')
         }
