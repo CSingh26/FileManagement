@@ -73,7 +73,7 @@ function LoginForm() {
                             />
                         </div>
                         <div className="forgot-pwd">
-                            <Link to={"/login"} className="for-pwd">Forgot Password?</Link>
+                            <Link to={"/forgot-password"} className="for-pwd">Forgot Password?</Link>
                         </div>
                         <div className="signup-page">
                             <p>Don't have an Account? <Link to={"/signup"} className="for-pwd">Register</Link></p>
