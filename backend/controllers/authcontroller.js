@@ -1,6 +1,9 @@
 const User = require('../models/userModel')
 const enc = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const emialer = require('nodemailer')
+const { google } = require('googleapis')
+const { authenticator } = require('otplib')
 
 require('dotenv').config({ path: '/Users/chaitanyasingh/Documents/Project/9/backend/.env'}) //configure your env and enter approraite path
 
@@ -84,4 +87,98 @@ exports.logout = (req, res) => {
     res.status(200).json({
         message: 'User Logged Out'
     })
+}
+
+const OAuth2 = google.auth.OAuth2
+
+const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    process.env.REDIRECT_URI
+)
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN
+  })
+
+
+
+exports.sendOTP = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        let user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({
+                message: 'Email not found'
+            })
+        }
+
+        const otp = authenticator.generate(process.env.OTP_KEY)
+        user.otp = otp
+        user.otpExpires = Date.now() + 300000
+        await user.save()
+
+        const mail = {
+            from: process.env.GMAIL_EMAIL,
+            to: email,
+            subject: 'Your OTP for password-reset',
+            text: `Your OTP code is ${otp}`
+        }
+
+        transporter.sendMail(mail, (error, inof) => {
+            if (error) {
+                return res.status(500).json({
+                    message: 'Failed to send the OTP',
+                    error: error
+                })
+            }
+
+            res.status(200).json({
+                message: 'OTP sent successfully'
+            })
+        })
+    } catch (err) {
+        res.status(500).send(
+            'Server Error, Please try again!'
+        )
+    }
+}
+
+exports.verifyOTP = async (req, res) => {
+    const { email, otp, newPassword } = req.body
+
+    try {
+        let user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({
+                message: 'Invalid Email'
+            })
+        }
+
+        if (user.otpExpires < Date.now()) {
+            return res.status(400).json({
+                message: "OTP has expired"
+            })
+        }
+
+        if (user.otp != otp) {
+            return res.status(400).json({
+                message: 'Invalid OTP'
+            })
+        }
+
+        const hashedPwd = enc.hashSync(newPassword, 16)
+        user.password = hashedPwd
+        user.otp = undefined
+        user.otpExpires = undefined
+
+        await user.save()
+
+        res.status(200).json({
+            message: 'Password reset successfully'
+        })
+    } catch (err) {
+        res.status(500).send('Server Error, Please try again!!')
+    }
 }

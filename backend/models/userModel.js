@@ -16,6 +16,12 @@ const User = new mong.Schema({
         type: String,
         required: true,
         unique: false
+    },
+    otp: {
+        type: String
+    },
+    otpExpires: {
+        type: Date
     }
 })
 
