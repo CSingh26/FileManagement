@@ -2,11 +2,14 @@ import React, { useState } from "react"
 import Header from "../Header/header"
 import server from "../../utils/axios"
 import { toast } from 'react-toastify'
+import { useLocation, useNavigate } from "react-router-dom"
 import './forgotpwd.css'
 
 const ResetPassword = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
     const [formData, setFormData] = useState({
-        email: '',
+        email: location.state?.email || '',
         otp: '',
         newPassword: '',
         confirmNewPassword: ''

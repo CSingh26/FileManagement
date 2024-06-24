@@ -99,9 +99,21 @@ const oauth2Client = new OAuth2(
 
 oauth2Client.setCredentials({
     refresh_token: process.env.REFRESH_TOKEN
-  })
+})
 
+const accessToken = oauth2Client.getAccessToken()
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: process.env.GMAIL_EMAIL,
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken: accessToken,
+    },
+})
 
 exports.sendOTP = async (req, res) => {
     const { email } = req.body
@@ -126,7 +138,7 @@ exports.sendOTP = async (req, res) => {
             text: `Your OTP code is ${otp}`
         }
 
-        transporter.sendMail(mail, (error, inof) => {
+        transporter.sendMail(mail, (error, info) => {
             if (error) {
                 return res.status(500).json({
                     message: 'Failed to send the OTP',

@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import Header from "../Header/header"
 import server from "../../utils/axios"
 import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom"
 import './forgotpwd.css'
 
 function ForgotPwd () {
     const [email, setEmail] = useState('')
+    const navigate = useNavigate()
 
     const handleRequest = async (e) => {
         e.preventDefault()
@@ -15,6 +17,10 @@ function ForgotPwd () {
             toast.success('OTP sent successfully', {
                 position: 'top-center'
             })
+            navigate('/reset-password', 
+                { 
+                    state: { email } 
+                })
         } catch (err) {
             toast.error('Failed to send OTP', {
                 position: 'top-center'

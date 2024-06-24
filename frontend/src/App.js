@@ -27,7 +27,7 @@ function App() {
           <Route path="/signup" element={<SignupForm />} />
           <Route path='/profile' element={<ProtectedRoutes><Profile /></ProtectedRoutes>}/>
           <Route path='/forgot-password' element={<ForgotPwd />}/>
-          <Route path='reset-password' element={<ResetPassword />}/>
+          <Route path='/reset-password' element={<ResetPassword />}/>
         </Routes>
       </Router>
     </AuthProvider>
