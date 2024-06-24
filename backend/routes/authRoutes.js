@@ -6,6 +6,6 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/logout', logout)
 router.post('/request-otp', sendOTP)
-router.post('/verify-opt', verifyOTP)
+router.post('/verify-otp', verifyOTP)
 
 module.exports = router

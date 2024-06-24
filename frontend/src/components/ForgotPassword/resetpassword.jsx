@@ -31,7 +31,7 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const pwdValid = validatePwd(newPassword)
+        const pwdValid = validatePwd(formData.newPassword)
         const pwdMatch = formData.newPassword === formData.confirmNewPassword
 
         if (!pwdValid) {
@@ -88,7 +88,7 @@ const ResetPassword = () => {
                         <input 
                         type="text"
                         placeholder="Enter Verification OTP"
-                        name="OTP"
+                        name="otp"
                         value={formData.otp}
                         onChange={handleChange}
                         className="user-otp"
@@ -108,7 +108,7 @@ const ResetPassword = () => {
                         <input 
                         type="password"
                         placeholder="Confirm the new Password"
-                        name="confirmPassword"
+                        name="confirmNewPassword"
                         value={formData.confirmNewPassword}
                         onChange={handleChange}
                         className="user-password"

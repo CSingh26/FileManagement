@@ -1,7 +1,7 @@
 const User = require('../models/userModel')
 const enc = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const emialer = require('nodemailer')
+const emailer = require('nodemailer')
 const { google } = require('googleapis')
 const { authenticator } = require('otplib')
 
@@ -103,7 +103,7 @@ oauth2Client.setCredentials({
 
 const accessToken = oauth2Client.getAccessToken()
 
-const transporter = nodemailer.createTransport({
+const transporter = emailer.createTransport({
     service: 'gmail',
     auth: {
       type: 'OAuth2',
@@ -174,13 +174,13 @@ exports.verifyOTP = async (req, res) => {
             })
         }
 
-        if (user.otp != otp) {
+        if (user.otp !== otp) {
             return res.status(400).json({
                 message: 'Invalid OTP'
             })
         }
 
-        const hashedPwd = enc.hashSync(newPassword, 16)
+        const hashedPwd = await enc.hash(newPassword, 16)
         user.password = hashedPwd
         user.otp = undefined
         user.otpExpires = undefined
