@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config({ path: '/Users/chaitanyasingh/Documents/Project/9/backend/.env'}) //configure your env and enter approraite path
 
 module.exports = function(req, res, next) {
-    const token = req.cookie.token
+    const token = req.cookies.token
 
     if (!token) {
         return res.status(401).json({

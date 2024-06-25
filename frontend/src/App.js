@@ -6,6 +6,7 @@ import Home from './components/Home/home'
 import Profile from './components/Profile/userProfile'
 import ForgotPwd from './components/ForgotPassword/forgotpwd'
 import ResetPassword from './components/ForgotPassword/resetpassword'
+import Dashboard from './components/Dashboard/dashboard'
 import ProtectedRoutes from './context/protectedRoutes'
 import { AuthProvider } from './context/authContext'
 import  {
@@ -28,6 +29,7 @@ function App() {
           <Route path='/profile' element={<ProtectedRoutes><Profile /></ProtectedRoutes>}/>
           <Route path='/forgot-password' element={<ForgotPwd />}/>
           <Route path='/reset-password' element={<ResetPassword />}/>
+          <Route path='/dashboard' element={<Dashboard />}/>
         </Routes>
       </Router>
     </AuthProvider>

@@ -83,9 +83,20 @@ exports.login = async(req, res) => {
 }
 
 exports.logout = (req, res) => {
-    res.clearCookie('token')
+    if (!req.cookies || !req.cookies.token) {
+        return res.status(400).json({
+            message: "No session found or user already logged out"
+        })
+    }
+
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+    })
+
     res.status(200).json({
-        message: 'User Logged Out'
+        message: 'User successfully logged out'
     })
 }
 

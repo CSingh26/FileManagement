@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
       await server.post('/logout')
       setAuth(null)
       localStorage.removeItem('userData')
+      window.location = '/login'
     } catch (err) {
       console.error('Error logging out', err)
     }
