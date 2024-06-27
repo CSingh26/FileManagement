@@ -1,14 +1,24 @@
 const mong = require('mongoose')
-require('dotenv').config({ path: '/Users/chaitanyasingh/Documents/Project/9/backend/.env'}) //configure your env and enter approraite path
+const { GridFSBucket } = require('mongodb')
 
-const conn = async () => {
+require('dotenv').config({
+    path: '/Users/chaitanyasingh/Documents/Project/9/backend/.env'
+}) //configure your env and enter approraite path
+
+const connectDB = async () => {
     try {
-        await mong.connect(process.env.URL) 
+        const conn = await mong.connect(process.env.URL)
         console.log('MongoDB connected')
+
+        const gfs = new GridFSBucket(conn.connection.db, {
+            bucketName: 'photos'
+        })
+
+        return { conn, gfs }
     } catch (err) {
-        console.log(err.message)
+        console.error(err.message)
         process.exit(1)
     }
 }
 
-module.exports = conn
+module.exports = connectDB
