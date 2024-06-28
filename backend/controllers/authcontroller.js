@@ -190,9 +190,7 @@ exports.verifyOTP = async (req, res) => {
                 message: 'Invalid OTP'
             })
         }
-
-        const hashedPwd = await enc.hash(newPassword, 16)
-        user.password = hashedPwd
+        user.password = newPassword
         user.otp = undefined
         user.otpExpires = undefined
 
