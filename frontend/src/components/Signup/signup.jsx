@@ -13,12 +13,27 @@ function SignupForm() {
     confirmPassword: ''
   })
 
+  const[loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
+
+  const changeFavicon = (link) => {
+    let $favicon = document.querySelector('link[rel="icon"]')
+
+    if ($favicon !== null) {
+        $favicon.href = link
+    } else {
+        $favicon = document.createElement("link")
+        $favicon.rel = "icon"
+        $favicon.href = link
+        document.head.appendChild($favicon)
+    }
+}
 
   const validatePwd = (password) => {
     const lenChk = password.length >= 8
@@ -30,11 +45,14 @@ function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
+    changeFavicon('/assests/Eclipse@1x-0.8s-200px-200px.gif')
 
     const pwdValid = validatePwd(formData.password)
     const pwdmatch = formData.password === formData.confirmPassword
 
     if (!pwdValid) {
+      setLoading(false)
       toast.error(
         `Password must be at least 8 characters long, 
         contain an uppercase letter, 
@@ -47,6 +65,7 @@ function SignupForm() {
     }
 
     if (!pwdmatch) {
+      setLoading(false)
       toast.error("Passwords do not match." ,{
         position: "top-center"
       })
@@ -62,11 +81,18 @@ function SignupForm() {
         })
         console.log(response.data)
         toast.success("Registration successful! Please log in.", {
-          position: "top-center"
+          position: "top-center",
+          onClose: () => {
+            setLoading(false)
+            changeFavicon('/favicon.ico')
+            setTimeout(() => {
+                navigate('/login')
+            }, 750)
+        }
         })
-        navigate('/login')
       } catch (err) {
         console.error(err)
+        setLoading(false)
         toast.error("Registration failed. Please try again.", {
           position: "top-center"
         })

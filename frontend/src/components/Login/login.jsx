@@ -12,6 +12,8 @@ function LoginForm() {
         password: ''
     })
 
+    const[loading, setLoading] = useState(false)
+
     const history = useNavigate()
     const { auth, login } = useContext(AuthContext)
 
@@ -20,6 +22,18 @@ function LoginForm() {
         setFormData({ ...formData, [name]: value})
     }
 
+    const changeFavicon = (link) => {
+        let $favicon = document.querySelector('link[rel="icon"]')
+
+        if ($favicon !== null) {
+            $favicon.href = link
+        } else {
+            $favicon = document.createElement("link")
+            $favicon.rel = "icon"
+            $favicon.href = link
+            document.head.appendChild($favicon)
+        }
+    }
     useEffect(() => {
         if (auth) {
             history('/profile')
@@ -28,18 +42,27 @@ function LoginForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
+        changeFavicon('/assests/Eclipse@1x-0.8s-200px-200px.gif')
         
         try {
             const response = await api.post('/login', formData)
-            console.log(response.data)
 
             const { user } = response.data;
             login(user)
             toast.success('Login Successful!', {
-                position: "top-center"
+                position: "top-center",
+                onClose: () => {
+                    setLoading(false)
+                    changeFavicon('/favicon.ico')
+                    setTimeout(() => {
+                        history('/profile')
+                    }, 750)
+                }
             })
-            history('/profile')
         } catch (err) {
+            setLoading(false)
+            changeFavicon('/favicon.ico')
             toast.error('Invalid Credentials', {
                 position: "top-center"
             })
