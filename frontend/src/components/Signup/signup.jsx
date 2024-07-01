@@ -74,7 +74,7 @@ function SignupForm() {
 
     if (pwdValid && pwdmatch) {
       try {
-        const response = await server.post('/register', {
+        const response = await server.server.post('/register', {
           username: formData.username,
           email: formData.email,
           password: formData.password

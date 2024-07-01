@@ -5,4 +5,11 @@ const server = axios.create({
     withCredentials: true
 })
 
-export default server 
+const profile = axios.create({
+    baseURL: 'http://localhost:8080/profile',
+    withCredentials: true
+})
+
+export default {
+    server, profile
+}

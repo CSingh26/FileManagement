@@ -46,7 +46,7 @@ function LoginForm() {
         changeFavicon('/assests/Eclipse@1x-0.8s-200px-200px.gif')
         
         try {
-            const response = await api.post('/login', formData)
+            const response = await api.server.post('/login', formData)
 
             const { user } = response.data;
             login(user)
@@ -62,6 +62,7 @@ function LoginForm() {
             })
         } catch (err) {
             setLoading(false)
+            console.error(err)
             changeFavicon('/favicon.ico')
             toast.error('Invalid Credentials', {
                 position: "top-center"

@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await server.post('/logout')
+      await server.server.post('/logout')
       setAuth(null)
       localStorage.removeItem('userData')
       window.location = '/login'
