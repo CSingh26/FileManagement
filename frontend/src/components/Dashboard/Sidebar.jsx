@@ -14,7 +14,7 @@ function Sidebar() {
     return (
         <div className="sidebar">
             <div className="sidebar-menu">
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard">Projects</Link>
                 <Link to="#">Tasks</Link>
             </div>
             <div
