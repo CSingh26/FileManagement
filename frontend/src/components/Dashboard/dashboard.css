@@ -1,0 +1,8 @@
+.dashboard-main {
+    display: flex;
+}
+
+.hashboard-content {
+    flex: 1;
+    padding: 20px;
+}
