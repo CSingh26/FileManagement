@@ -2,6 +2,7 @@ const express = require('express')
 const conn = require('./utils/db')
 const routes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
+const taskRoutes = require('./routes/taskRoutes')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookie = require('cookie-parser')
@@ -27,6 +28,8 @@ conn().then(({ gfs }) => {
     app.set('gfs', gfs)
     app.use('/auth', routes)
     app.use('/profile', profileRoutes)
+    app.use('/tasks', taskRoutes)
+
 
     app.listen(PORT, () => {
         console.log(`Server is running on ${PORT}`)
