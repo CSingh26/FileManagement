@@ -1,5 +1,5 @@
-import React from "react"
-import './taskSection.css'
+import React from "react";
+import './taskSection.css';
 
 const TaskSection = ({ sectionName, tasks, onDragStart, onDrop }) => {
     return (
@@ -10,22 +10,22 @@ const TaskSection = ({ sectionName, tasks, onDragStart, onDrop }) => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => onDrop(e, sectionName)}
             >
-                {tasks.map(task => {
+                {tasks.map(task => (
                     <div
-                        key={task.id}
+                        key={task._id}
                         className="task-item"
                         draggable
                         onDragStart={(e) => onDragStart(e, task)}
                     >
                         <h4>{task.name}</h4>
                         <p>{task.description}</p>
-                        <p>Due: {task.dueDate}</p>
+                        <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
                         <p>Severity: {task.severity}</p>
                     </div>
-                })}    
-                </div>
+                ))}    
+            </div>
         </div>
-    )
+    );
 }
 
-export default TaskSection
+export default TaskSection;

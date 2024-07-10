@@ -2,16 +2,16 @@ const Task = require('../models/taskModel')
 
 exports.createTask = async (req, res) => {
     try {
-        const { name, dueDate, description, severity, projectName } = req.body
-        const user = req.user.description
+        const { name, dueDate, description, severity, projectName, sectionName } = req.body
 
         const newTask = new Task({
-            user,
+            user: req.user.id,
             name,
             dueDate,
             description,
             severity,
-            projectName
+            projectName,
+            sectionName
         })
 
         const savedTask = await newTask.save()
@@ -32,15 +32,7 @@ exports.getTasks = async (req, res) => {
             user: req.user.id
         })
 
-        if (tasks) {
-            res.status(201).json({
-                message: "Task fetched"
-            })
-        } else {
-            res.status(400).json({
-                message: 'This user have no tasks scheduled'
-            })
-        }
+        res.json(tasks)
         
     } catch (err) {
         console.error(err)

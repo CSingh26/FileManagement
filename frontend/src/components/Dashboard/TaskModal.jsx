@@ -1,13 +1,15 @@
 import React, { useState } from "react"
+import api from '../../utils/axios'
 import './taskModal.css'
 
-const TaskModal =({ show, onClose, onSubmit}) => {
+const TaskModal =({ show, onClose, onSubmit, sections}) => {
     const [formData, setFormData] = useState({
         name: '',
         dueDate: '',
         description: '',
         severity: '',
-        projectName: ''
+        projectName: '',
+        sectionName: sections[0]?.name || ''
     })
 
     const handleChange = (e) => {
@@ -15,10 +17,16 @@ const TaskModal =({ show, onClose, onSubmit}) => {
         setFormData({ ...formData, [name]: value})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        onSubmit(formData)
-        onClose()
+        try {
+            await api.tasks.post('/createTask', formData)
+            onSubmit(formData)
+            onClose()
+        } catch (err) {
+            console.error('Error creating task:', err)
+            console.error(err)
+        }
     }
 
     if (!show) return null
@@ -27,7 +35,7 @@ const TaskModal =({ show, onClose, onSubmit}) => {
         <div className="modal-overlay">
             <div className="modal-content">
                 <h2>Add Task</h2>
-                <form onSubmit={{handleSubmit}}>
+                <form onSubmit={handleSubmit}>
                     <label> 
                         Task Name:
                         <input 
@@ -50,7 +58,7 @@ const TaskModal =({ show, onClose, onSubmit}) => {
                         Description:
                         <textarea 
                         name='description'
-                        value={formData.dueDate}
+                        value={formData.description}
                         onChange={handleChange} 
                         />
                     </label>
@@ -73,6 +81,20 @@ const TaskModal =({ show, onClose, onSubmit}) => {
                         value={formData.projectName}
                         onChange={handleChange} 
                         />
+                    </label>
+                    <label>
+                        Section:
+                        <select
+                            name="sectionName"
+                            value={formData.sectionName}
+                            onChange={handleChange}
+                        >
+                            {sections.map((section) => (
+                                <option key={section.name} value={section.name}>
+                                    {section.name}
+                                </option>
+                            ))}
+                        </select>
                     </label>
                     <button type="submit">Add Task</button>
                 </form>

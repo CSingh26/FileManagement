@@ -1,8 +1,109 @@
+/* dashboard.css */
 .dashboard-main {
     display: flex;
 }
 
-.hashboard-content {
-    flex: 1;
+.dashboard-content {
+    display: flex;
+    flex-grow: 1;
     padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.task-section {
+    width: calc(50% - 10px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.task-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+}
+
+.task-item h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.task-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* sidebar.css */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-menu a,
+.sidebar-menu button {
+    padding: 10px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu button:hover {
+    background-color: #ddd;
+}
+
+.sidebar-footer {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-footer img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sidebar .profile-info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: #f1f1f1;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.sidebar .profile-info img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.sidebar .profile-info span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
 }

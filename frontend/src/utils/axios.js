@@ -10,6 +10,11 @@ const profile = axios.create({
     withCredentials: true
 })
 
+const tasks = axios.create({
+    baseURL: 'http://localhost:8080/tasks',
+    withCredentials: true
+})
+
 export default {
-    server, profile
+    server, profile, tasks
 }

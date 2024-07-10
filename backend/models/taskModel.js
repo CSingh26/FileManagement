@@ -31,6 +31,10 @@ const TaskSchema = new mong.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    sectionName: {
+        type: String,
+        required: false
     }
 })
 
