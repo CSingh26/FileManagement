@@ -1,10 +1,14 @@
 import React from "react";
 import './taskSection.css';
 
-const TaskSection = ({ sectionName, tasks, onDragStart, onDrop, onDeleteTask }) => {
+const TaskSection = ({ sectionName, tasks, onDragStart, onDrop, onDeleteTask, onEditSection, onDeleteSection }) => {
     return (
         <div className="task-section">
             <h3>{sectionName}</h3>
+            <div className="section-actions">
+                <button onClick={onEditSection}>Edit</button>
+                <button onClick={onDeleteSection}>Delete</button>
+            </div>
             <div
                 className="task-list"
                 onDragOver={(e) => e.preventDefault()}

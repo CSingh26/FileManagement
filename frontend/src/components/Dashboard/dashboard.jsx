@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import Sidebar from "./Sidebar"
 import TaskModal from "./TaskModal"
 import TaskSection from "./TaskSelection"
+import EditSectionModal from "./EditSectionModal"
 import api from '../../utils/axios'
 import './dashboard.css'
 
@@ -9,6 +10,8 @@ function UserDashboard() {
     const [showModal, setShowModal] = useState(false)
     const [tasks, setTasks] = useState([])
     const [sections, setSections] = useState([])
+    const [showEditingSectionModal, setShowEditingSectionModal] = useState(false)
+    const [editingSection, setEditingSection] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,14 +37,19 @@ function UserDashboard() {
         }))
     }, [tasks])
 
-    const handleAddTask = (task) => {
-        setTasks(prevTasks => [...prevTasks, { ...task, id: prevTasks.length + 1 }])
+    const handleAddTask = async (task) => {
+        try {
+            const response = await api.tasks.post('/createTask', task)
+            setTasks(prevTasks => [...prevTasks, response.data.task])
+        } catch (err) {
+            console.error('Error adding task:', err)
+        }
     }
 
     const handleAddSection = async (sectionName) => {
         try {
             const response = await api.section.post('/createSection', { name: sectionName })
-            setSections(prevSections => [...prevSections, { ...response.data.section, tasks: [] }])
+            setSections(prevSections => [...prevSections, { ...response.data, tasks: [] }])
         } catch (err) {
             console.error('Error adding section:', err)
         }
@@ -67,6 +75,32 @@ function UserDashboard() {
             setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId))
         } catch (err) {
             console.error('Error deleting task:', err)
+        }
+    }
+
+    const handleEditSection = (section) => {
+        setEditingSection(section)
+        setShowEditingSectionModal(true)
+    }
+
+    const handleUpdateSection = async (sectionName) => {
+        try {
+            const response = await api.section.put(`/updateSection/${editingSection._id}`, { name: sectionName })
+            setSections(sections.map(section => section._id === editingSection._id ? { ...section, name: response.data.section.name } : section))
+            setShowEditingSectionModal(false)
+            setEditingSection(null)
+        } catch (err) {
+            console.error('Error updating section:', err)
+        }
+    }
+
+    const handleDeleteSection = async (sectionId) => {
+        try {
+            await api.section.delete(`/deleteSection/${sectionId}`)
+            setSections(sections.filter(section => section._id !== sectionId))
+            setTasks(tasks.map(task => task.sectionName === sectionId ? { ...task, sectionName: '' } : task))
+        } catch (err) {
+            console.error('Error deleting section:', err)
         }
     }
 
@@ -98,6 +132,8 @@ function UserDashboard() {
                         onDragStart={handleDragStart}
                         onDrop={handleDrop}
                         onDeleteTask={handleDeleteTask}
+                        onDeleteSection={() => handleDeleteSection(section._id)}
+                        onEditSection={() => handleEditSection(section)}
                     />
                 ))}
             </div>
@@ -106,6 +142,12 @@ function UserDashboard() {
                 onClose={() => setShowModal(false)}
                 onSubmit={handleAddTask}
                 sections={sections} 
+            />
+            <EditSectionModal 
+                show={showEditingSectionModal}
+                onClose={() => setShowEditingSectionModal(false)}
+                onSubmit={handleUpdateSection}
+                section={editingSection}
             />
         </div>
     )

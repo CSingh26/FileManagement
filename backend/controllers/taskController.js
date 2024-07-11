@@ -45,7 +45,7 @@ exports.getTasks = async (req, res) => {
 exports.updateTask = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, dueDate, description, severity, projectName } = req.body
+        const { name, dueDate, description, severity, projectName, sectionName } = req.body
 
         const task = await Task.findById(id)
 
@@ -66,6 +66,7 @@ exports.updateTask = async (req, res) => {
         task.description = description || task.description
         task.severity = severity || task.severity
         task.projectName = projectName || task.projectName
+        task.sectionName = sectionName || task.sectionName
 
         const updatedTask  = await task.save()
 
@@ -136,7 +137,7 @@ exports.updateTaskSection = async (req,res) => {
         const updatedTask = await task.save()
 
         res.status(200).json({
-            message: 'Task section updated successfully'
+            task: updatedTask
         })
     } catch (err) {
         console.error(err)
