@@ -1,7 +1,7 @@
 import React from "react";
 import './taskSection.css';
 
-const TaskSection = ({ sectionName, tasks, onDragStart, onDrop }) => {
+const TaskSection = ({ sectionName, tasks, onDragStart, onDrop, onDeleteTask }) => {
     return (
         <div className="task-section">
             <h3>{sectionName}</h3>
@@ -19,8 +19,9 @@ const TaskSection = ({ sectionName, tasks, onDragStart, onDrop }) => {
                     >
                         <h4>{task.name}</h4>
                         <p>{task.description}</p>
-                        <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+                        <p>Due: {task.dueDate}</p>
                         <p>Severity: {task.severity}</p>
+                        <button onClick={() => onDeleteTask(task._id)}>Delete</button>
                     </div>
                 ))}    
             </div>

@@ -3,12 +3,20 @@ import  { Link } from 'react-router-dom'
 import { AuthContext } from '../../context/authContext'
 // import './sidebar.css'
 
-function Sidebar() {
+function Sidebar( {onAddSection} ) {
     const[showProfile, setShowProfile] = useState(false)
+    const [newSectionName, setNewSectionName] = useState("")
     const { logout } = useContext(AuthContext)
 
     const handleLogout= () => {
         logout()
+    }
+
+    const handleAddSection = () => {
+        if (newSectionName.trim()) {
+            onAddSection(newSectionName.trim())
+            setNewSectionName("")
+        }
     }
 
     return (
@@ -16,6 +24,15 @@ function Sidebar() {
             <div className="sidebar-menu">
                 <Link to="/dashboard">Projects</Link>
                 <Link to="#">Tasks</Link>
+                <div className="add-section">
+                    <input
+                        type="text"
+                        placeholder="New section name"
+                        value={newSectionName}
+                        onChange={(e) => setNewSectionName(e.target.value)}
+                    />
+                    <button onClick={handleAddSection}>Add Section</button>
+                </div>
             </div>
             <div
                 className={`sidebar-profile ${setShowProfile ? 'active' : ''}`}

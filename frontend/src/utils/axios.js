@@ -15,6 +15,14 @@ const tasks = axios.create({
     withCredentials: true
 })
 
+const section = axios.create({
+    baseURL: 'http://localhost:8080/section',
+    withCredentials: true
+})
+
 export default {
-    server, profile, tasks
+    server, 
+    profile, 
+    tasks, 
+    section
 }

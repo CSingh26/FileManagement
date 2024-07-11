@@ -107,3 +107,31 @@
     margin-top: 10px;
     font-weight: bold;
 }
+
+.profile-options {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    background-color: #ffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: slide-up 0.3s forwards;
+}
+
+.sidebar-profile.active .profile-options {
+    display: block;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -2,14 +2,13 @@ import React, { useState } from "react"
 import api from '../../utils/axios'
 import './taskModal.css'
 
-const TaskModal =({ show, onClose, onSubmit, sections}) => {
+const TaskModal =({ show, onClose, onSubmit}) => {
     const [formData, setFormData] = useState({
         name: '',
         dueDate: '',
         description: '',
         severity: '',
-        projectName: '',
-        sectionName: sections[0]?.name || ''
+        projectName: ''
     })
 
     const handleChange = (e) => {
@@ -81,20 +80,6 @@ const TaskModal =({ show, onClose, onSubmit, sections}) => {
                         value={formData.projectName}
                         onChange={handleChange} 
                         />
-                    </label>
-                    <label>
-                        Section:
-                        <select
-                            name="sectionName"
-                            value={formData.sectionName}
-                            onChange={handleChange}
-                        >
-                            {sections.map((section) => (
-                                <option key={section.name} value={section.name}>
-                                    {section.name}
-                                </option>
-                            ))}
-                        </select>
                     </label>
                     <button type="submit">Add Task</button>
                 </form>

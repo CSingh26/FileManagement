@@ -3,6 +3,7 @@ const conn = require('./utils/db')
 const routes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
 const taskRoutes = require('./routes/taskRoutes')
+const sectionRoutes = require('./routes/sectionRoutes')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookie = require('cookie-parser')
@@ -29,6 +30,7 @@ conn().then(({ gfs }) => {
     app.use('/auth', routes)
     app.use('/profile', profileRoutes)
     app.use('/tasks', taskRoutes)
+    app.use('/section', sectionRoutes)
 
 
     app.listen(PORT, () => {
