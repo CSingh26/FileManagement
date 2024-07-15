@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Sidebar from "./Sidebar"
 import TaskModal from "./TaskModal"
-import TaskSection from "./TaskSelection"
+import TaskSection from "./TaskSection"
 import EditSectionModal from "./EditSectionModal"
 import api from '../../utils/axios'
 import './dashboard.css'
@@ -98,7 +98,7 @@ function UserDashboard() {
         try {
             await api.section.delete(`/deleteSection/${sectionId}`)
             setSections(sections.filter(section => section._id !== sectionId))
-            setTasks(tasks.map(task => task.sectionName === sectionId ? { ...task, sectionName: '' } : task))
+            setTasks(prevTasks => prevTasks.map(task => task.sectionName === sectionId ? { ...task, sectionName: '' } : task))
         } catch (err) {
             console.error('Error deleting section:', err)
         }

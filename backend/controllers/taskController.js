@@ -16,28 +16,25 @@ exports.createTask = async (req, res) => {
 
         const savedTask = await newTask.save()
         res.status(201).json({
-            message: "Task Made Successfully"
+            message: "Task created successfully",
+            task: savedTask
         })
     } catch (err) {
         console.error(err)
         res.status(500).json({
-            message: 'Sever Error'
+            message: 'Server Error'
         })
     }
 }
 
 exports.getTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({
-            user: req.user.id
-        })
-
+        const tasks = await Task.find({ user: req.user.id })
         res.json(tasks)
-        
     } catch (err) {
         console.error(err)
         res.status(500).json({
-            message: 'Sever Error'
+            message: 'Server Error'
         })
     }
 }
@@ -70,13 +67,14 @@ exports.updateTask = async (req, res) => {
 
         const updatedTask  = await task.save()
 
-        res.status(201).json({
-            'message': 'Task Updated!!'
+        res.status(200).json({
+            message: 'Task updated successfully',
+            task: updatedTask
         })
     } catch (err) {
         console.error(err)
         res.status(500).json({
-            message: 'Sever Error'
+            message: 'Server Error'
         })
     }
 }
@@ -99,17 +97,15 @@ exports.deleteTask = async (req, res) => {
             })
         }
 
-        await task.deleteOne({
-            _id: id
-        })
+        await task.deleteOne()
 
-        res.status(201).json({
-            message: 'Task Removed'
+        res.status(200).json({
+            message: 'Task deleted successfully'
         })
     } catch (err) {
         console.error(err)
         res.status(500).json({
-            message: 'Sever Error'
+            message: 'Server Error'
         })
     }
 }

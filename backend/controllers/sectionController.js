@@ -1,5 +1,5 @@
 const Section = require('../models/sectionModel')
-const Task = require('../models/userModel')
+const Task = require('../models/taskModel')
 
 exports.createSection = async (req, res) => {
     try {
@@ -25,9 +25,7 @@ exports.createSection = async (req, res) => {
 
 exports.getSection = async (req, res) => {
     try {
-        const sections = await Section.find({
-            user: req.user.id
-        })
+        const sections = await Section.find({ user: req.user.id })
         res.json(sections)
     } catch (err) {
         console.error(err)
@@ -55,18 +53,11 @@ exports.deleteSection = async (req, res) => {
             })
         }
 
-        await Task.updateMany({
-            sectionName: section.name
-        }, {
-            sectionName: ''
-        })
-
-        await section.deleteOne({
-            _id: id
-        })
+        await Task.updateMany({ sectionName: section.name }, { $set: { sectionName: '' } })
+        await section.deleteOne()
 
         res.status(200).json({
-            message: 'Section Removed'
+            message: 'Section deleted successfully'
         })
     } catch (err) {
         console.error(err)
@@ -78,7 +69,7 @@ exports.deleteSection = async (req, res) => {
 
 exports.updateSection = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const { name } = req.body
 
         const section = await Section.findById(id)
@@ -90,7 +81,7 @@ exports.updateSection = async (req, res) => {
         }
 
         if (section.user.toString() !== req.user.id) {
-            return res.statud(401).json({
+            return res.status(401).json({
                 message: 'User not authorized'
             })
         }
